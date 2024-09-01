@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcryptjs';
+import * as bycrypt from 'bcryptjs';
 import { Member } from '../../libs/dto/member/member';
 import { T } from '../../libs/types/common';
 import { JwtService } from '@nestjs/jwt';
@@ -10,25 +10,20 @@ export class AuthService {
 	constructor(private jwtService: JwtService) {}
 
 	public async hashPassword(memberPassword: string): Promise<string> {
-		const salt = await bcrypt.genSalt();
-
-		return await bcrypt.hash(memberPassword, salt);
+		const salt = await bycrypt.genSalt();
+		return await bycrypt.hash(memberPassword, salt);
 	}
 
-	public async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
-		return await bcrypt.compare(password, hashedPassword);
+	public async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
+		return await bycrypt.compare(password, hashedPassword);
 	}
 
 	public async createToken(member: Member): Promise<string> {
-		console.log('member:', member);
-		const payload: T = { memberNick: 'TEST' };
-
+		const payload: T = {};
 		Object.keys(member['_doc'] ? member['_doc'] : member).map((ele) => {
 			payload[`${ele}`] = member[`${ele}`];
 		});
 		delete payload.memberPassword;
-		console.log('payload:', payload);
-
 		return await this.jwtService.signAsync(payload);
 	}
 

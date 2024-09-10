@@ -6,12 +6,14 @@ export const availableMemberSorts = ['createdAt', 'updtaedAt', 'memberLikes', 'm
 export const availabeOptions = ['propertyBarter', 'propertyRent'];
 export const availablePropertySorts = [
 	'createdAt',
-	'updtedAt',
+	'updatedAt',
 	'propertyLikes',
-	'propertyviews',
+	'propertyViews',
 	'propertyRank',
 	'propertyPrice',
 ];
+export const availableBoardArticlesSorts = ['createdAt', 'updatedAt', 'articleLikes', 'articleViews'];
+export const availableCommentSorts = ['createdAt', 'updatedAt'];
 
 /** IMAGE CONFIGURATION  */
 import { v4 as uuidv4 } from 'uuid';

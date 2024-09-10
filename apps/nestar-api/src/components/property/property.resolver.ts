@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PropertyService } from './property.service';
-import { Properties, Property } from '../../libs/dto/property/ property';
+import { Properties, Property } from '../../libs/dto/property/property';
 import {
 	AgentsPropertiesInquiry,
 	AllPropertiesInquiry,
@@ -10,12 +10,15 @@ import {
 import { Roles } from '../auth/decorators/roles.decorator';
 import { MemberType } from '../../libs/enums/member.enum';
 import { UseGuards } from '@nestjs/common';
-import { RolesGuard } from '../auth/guards/ roles.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
 import { WithoutGuard } from '../auth/guards/without.guard';
 import { shapeIntoMogoObjectId } from '../../libs/config';
 import { PropertyUpdate } from '../../libs/dto/property/property.update';
+import { BoardArticleUpdate } from '../../libs/dto/board-article/board-article.update';
+import { BoardArticle } from '../../libs/dto/board-article/board-article';
+import { BoardArticleStatus } from '../../libs/enums/board-article.enum';
 
 @Resolver()
 export class PropertyResolver {
@@ -57,7 +60,7 @@ export class PropertyResolver {
 	}
 
 	@UseGuards(WithoutGuard)
-	@Query((returns) => Property)
+	@Query((returns) => Properties)
 	public async getProperties(
 		@Args('input') input: PropertiesInquiry,
 		@AuthMember('_id') memberId: ObjectId,
@@ -78,6 +81,7 @@ export class PropertyResolver {
 	}
 
 	/** ADMIN */
+
 	@Roles(MemberType.ADMIN)
 	@UseGuards(RolesGuard)
 	@Query((returns) => Properties)

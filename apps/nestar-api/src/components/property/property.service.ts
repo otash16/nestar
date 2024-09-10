@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
-import { Properties, Property } from '../../libs/dto/property/ property';
+import { Properties, Property } from '../../libs/dto/property/property';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import {
 	AgentsPropertiesInquiry,
@@ -15,7 +15,7 @@ import { StatisticModifier, T } from '../../libs/types/common';
 import { ViewGroup } from '../../libs/enums/view.enum';
 import { ViewService } from '../view/view.service';
 import { PropertyUpdate } from '../../libs/dto/property/property.update';
-import moment from 'moment';
+import * as moment from 'moment';
 import { lookupMember, shapeIntoMogoObjectId } from '../../libs/config';
 
 @Injectable()
@@ -104,7 +104,12 @@ export class PropertyService {
 				{ $sort: sort },
 				{
 					$facet: {
-						list: [{ $skip: (input.page - 1) * input.limit }, lookupMember, { $unwind: '$memberData' }],
+						list: [
+							{ $skip: (input.page - 1) * input.limit },
+							{ $limit: input.limit },
+							lookupMember,
+							{ $unwind: '$memberData' },
+						],
 						metaCounter: [{ $count: 'total' }],
 					},
 				},
@@ -129,6 +134,7 @@ export class PropertyService {
 			text,
 		} = input.search;
 		if (memberId) match.memberId = shapeIntoMogoObjectId(memberId);
+		if (locationList) match.propertyLocation = { $in: locationList };
 		if (typeList) match.propertyType = { $in: typeList };
 		if (roomsList) match.propertyRooms = { $in: roomsList };
 		if (bedsList) match.propertyBeds = { $in: bedsList };
@@ -165,7 +171,12 @@ export class PropertyService {
 				{ $sort: sort },
 				{
 					$facet: {
-						list: [{ $skip: (input.page - 1) * input.limit }, lookupMember, { $unwind: '$memberData' }],
+						list: [
+							{ $skip: (input.page - 1) * input.limit },
+							{ $limit: input.limit },
+							lookupMember,
+							{ $unwind: '$memberData' },
+						],
 						metaCounter: [{ $count: 'total' }],
 					},
 				},
@@ -191,7 +202,12 @@ export class PropertyService {
 				{ $sort: sort },
 				{
 					$facet: {
-						list: [{ $skip: (input.page - 1) * input.limit }, lookupMember, { $unwind: '$memberData' }],
+						list: [
+							{ $skip: (input.page - 1) * input.limit },
+							{ $limit: input.limit },
+							lookupMember,
+							{ $unwind: '$memberData' },
+						],
 						metaCounter: [{ $count: 'total' }],
 					},
 				},

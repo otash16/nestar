@@ -10,7 +10,7 @@ import { DatabaseModule } from './database/database.module';
 import { T } from './libs/types/common';
 import { graphql } from 'graphql';
 import { NestService } from './g/nest/nest.service';
-
+import { SocketModule } from './socket/socket.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot(),
@@ -31,6 +31,7 @@ import { NestService } from './g/nest/nest.service';
 		}),
 		ComponentsModule,
 		DatabaseModule,
+		SocketModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, AppResolver, NestService],

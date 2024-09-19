@@ -90,10 +90,10 @@ export class SquaresRange {
 
 @InputType()
 export class PeriodsRange {
-	@Field(() => Int)
+	@Field(() => Date)
 	start: Date;
 
-	@Field(() => Int)
+	@Field(() => Date)
 	end: Date;
 }
 
@@ -105,11 +105,11 @@ class PISearch {
 
 	@IsOptional()
 	@Field(() => [PropertyLocation], { nullable: true })
-	locationList?: PropertyLocation;
+	locationList?: PropertyLocation[];
 
 	@IsOptional()
 	@Field(() => [PropertyType], { nullable: true })
-	typeList?: PropertyType;
+	typeList?: PropertyType[];
 
 	@IsOptional()
 	@Field(() => [Int], { nullable: true })
@@ -160,7 +160,7 @@ export class PropertiesInquiry {
 
 	@IsOptional()
 	@Field(() => Direction, { nullable: true })
-	direction: Direction;
+	direction?: Direction;
 
 	@IsNotEmpty()
 	@Field(() => PISearch)
@@ -187,13 +187,17 @@ export class AgentsPropertiesInquiry {
 	limit: number;
 
 	@IsOptional()
+	@IsIn(availablePropertySorts)
+	@Field(() => String, { nullable: true })
+	sort?: string;
+
+	@IsOptional()
 	@Field(() => Direction, { nullable: true })
 	direction: Direction;
 
 	@IsNotEmpty()
 	@Field(() => APISearch)
 	search: APISearch;
-	sort: string;
 }
 
 @InputType()
@@ -229,6 +233,19 @@ export class AllPropertiesInquiry {
 	direction?: Direction;
 
 	@IsNotEmpty()
-	@Field(() => APISearch)
+	@Field(() => ALPSearch)
 	search: ALPSearch;
+}
+
+@InputType()
+export class OrdinaryInquiry {
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	page: number;
+
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	limit: number;
 }
